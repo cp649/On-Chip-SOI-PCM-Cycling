@@ -210,7 +210,7 @@ for i=start_cyc+1:1:n_cycles+start_cyc
     diim = (abs((imcr)-(imam))); % Absolute difference between crs. and amr.
     % Threshold values - selected heuretically. Potential statistical
     % methods are needed for more reliable sample to sample threshold
-    % selection
+    % selection. Systematic white balance, illumination conditions and camera exposure and camera sensor conditions are needed for further quantitative data reliability. 
     R_Thr = 10; G_Thr = 10; B_Thr = 10;
     [ViabPix, FOMAm,...
         FOMCr,FOMDiff] = DMAImFilter(imam, imcr,R_Thr,G_Thr,B_Thr);
