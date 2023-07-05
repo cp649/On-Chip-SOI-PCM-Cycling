@@ -54,8 +54,10 @@ addpath('.\ImAnalysis')
 ns = 1E-9; us= 1E-6; ms = 1E-3; s =1E0; % Set up units
 tam = 15*us; tcr = 0.6*s;    tprt= 500*ms; tdel = 1*s; % Set up amorphization and crystallization times.
 Vam = 34;    Vcr = 18;     n_cycles = 40000; % Set up voltages and # of cycles you want. A while loop could also work.
-start_cyc = 9019; %64416; % account for extra cycles already run on the sample
+start_cyc = 9019; % account for extra cycles already run on the sample
 VoltPrime = [8,10,12,14]; % Voltages to prime the sample to make subcritical nuclei
+SteadyStateResistance = 46.5; % Ohms. Measure it after several cycles or you can choose to set it to the initial value;
+%The initial resistance is typically higher than the subsequent ones. It is suspected that the wire-bonding contact improves upon several runs at high current (above 0.2 Amps). 
 % Directory to save imaged and data
 ChipName = '1P_CF_THK_1'; DeviceName = '312.2';
 % Setup your own folder path for where to store images and data.
@@ -234,9 +236,11 @@ for i=start_cyc+1:1:n_cycles+start_cyc
      [MeasCurr,MeasVolt,MeasResi]=SendPulse(fagi,fkie,1, 3,2,tdel); pause(tdel);
     % Select the resistance below which you need the sample to be such that
     % you don't overheat it.
-     while MeasResi >51.2
-        pause(10);
-        [MeasCurr,MeasVolt,MeasResi]=SendPulse(fagi,fkie,1, 1.2,1,tdel); pause(tdel);
+     waitCycles = 0;
+     while MeasResi > SteadyStateResistance && waitCycles < 5 
+        pause(2);
+        [MeasCurr,MeasVolt,MeasResi]=SendPulse(fagi,fkie,1, 1.2,1,0.2); pause(tdel);
+        waitCycles = waitCycles+1;
      end
      % Code for overamorphizing the sample to promote elemental mixing -
      % work in progress
