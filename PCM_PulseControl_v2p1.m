@@ -67,12 +67,12 @@ mkdir(imageDir);
 %% Connect to devices
 % Check in NI Visa Interactive control which ports each instrument is
 % diplaying
-fagi = visa('NI', 'ASRL8::INSTR');
+fagi = visadev('ASRL4::INSTR');
 set (fagi,'OutputBufferSize',100000);
-fopen(fagi);
-fkie = visa('NI', 'USB0::0x05E6::0x2200::9201990::INSTR');
+%fopen(fagi);
+fkie = visadev('USB0::0x05E6::0x2200::9201990::INSTR');
 set (fkie,'OutputBufferSize',100000);
-fopen(fkie);
+%fopen(fkie);
 %%
 %Query Identity string and report
 fprintf (fagi, '*IDN?');
@@ -262,6 +262,4 @@ fprintf(fagi,'OUTPUT OFF'); disp('Agilent output off');%
 fprintf(fkie,'OUTPUT OFF'); disp('Keithley output off');%
 
 %%
-fclose(fagi);
-fclose(fkie);
 close all; clear all;
